@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="MAIN" Id="{7046433e-02d5-4c99-9345-c740ba0b3903}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	nAlive: INT;
+	// Axis Instance
+	fbAxis: ARRAY[0..2] OF Tc3_HBI_MC2.FB_MC2_Basic;
+	
+	bCalibrationCam : BOOL; //home sensor
+	stAxis: ARRAY[0..2] OF ST_Axis;
+	i: INT;
+	
+	//Input
+	bInput1 : BOOL;
+	bInput2 : BOOL;
+	bInput3 : BOOL;
+	bInput4 : BOOL;
+	bInput5 : BOOL;
+	bInput6 : BOOL;
+	bInput7 : BOOL;
+	bInput8 : BOOL;
+	bInput9 : BOOL;
+	bInput10 : BOOL;
+	
+	//Output
+	bOutput1 : BOOL;
+	bOutput2 : BOOL;
+	bOutput3 : BOOL;
+	bOutput4 : BOOL;
+	bOutput5 : BOOL;
+	bOutput6 : BOOL;
+	bOutput7 : BOOL;
+	bOutput8 : BOOL;
+	bOutput9 : BOOL;
+	bOutput10 : BOOL;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nAlive:= nAlive +1;
+
+FOR i:= 0 TO 2 DO
+	
+//************************************
+// Call methods
+//************************************
+stAxis[i].arr_nStatus[1]:= fbAxis[i].M_nMC_Power(bEnable:= stAxis[i].bEnable, bE_Stop:= stAxis[i].bE_Stop, 									// Enable
+							bE_StopDelay:= stAxis[i].bE_StopDelay, bEnable_Positive:= stAxis[i].bEnable_Positive, 
+							bEnable_Negative:= stAxis[i].bEnable_Negative);							
+stAxis[i].arr_nStatus[2]:= fbAxis[i].M_nReset(bExecute:= stAxis[i].bReset);																// Reset
+stAxis[i].arr_nStatus[3]:= fbAxis[i].M_nMC_Halt(bExecute:= stAxis[i].bHalt);																// Halt
+stAxis[i].arr_nStatus[4]:= fbAxis[i].M_nMC_Stop(bExecute:= stAxis[i].bStop);																// Stop
+stAxis[i].arr_nStatus[5]:= fbAxis[i].M_nMC_Home(bExecute:= stAxis[i].bHome, lrPosition:= stAxis[i].lrHomePosition, 							// Home
+											bCalibrationCam:= stAxis[i].bCalibrationCam, eHomingMode:= MC_DefaultHoming);		
+stAxis[i].arr_nStatus[6]:= fbAxis[i].M_nMC_MoveAbsolute(bExecute:= stAxis[i].bAbsMove, lrPosition:= stAxis[i].lrAbsPosition, 				// Absolute
+													lrVelocity:= stAxis[i].lrAbsVelocity);									
+stAxis[i].arr_nStatus[7]:= fbAxis[i].M_nMC_MoveRelative(bExecute:= stAxis[i].bRelMove, lrDistance:= stAxis[i].lrRelDistance, 				// Relative
+													lrVelocity:= stAxis[i].lrRelVelocity);									
+stAxis[i].arr_nStatus[8]:= fbAxis[i].M_nMC_Jog(bForward:= stAxis[i].bJogForward, bBackwards:= stAxis[i].bJogBackwards, 						// Jog 
+											lrVelocity:= stAxis[i].lrJogVelocity);	
+stAxis[i].arr_nStatus[9]:= fbAxis[i].M_nMC_Dynamic(bExecute:= stAxis[i].bSetDynamic, lrAcceleration:= stAxis[i].lrAcceleration, 			// Set dynamic
+											lrDeceleration:= stAxis[i].lrDecelaration, lrJerk:= stAxis[i].lrJerk);		
+stAxis[i].arr_nStatus[10]:= fbAxis[i].M_nMC_MoveVelocity(bExecute:= stAxis[i].bMoveVelo, lrVelocity:= stAxis[i].lrVeloVelocity, 			// Velocity
+													eDirection:=  stAxis[i].nVeloDirection);								
+													
+													
+// Home sensor
+stAxis[i].bCalibrationCam:= bCalibrationCam;
+stAxis[i].lrActPos := fbAxis[i]._stAXIS_REF.NcToPlc.ActPos;
+stAxis[i].lrActVelo := fbAxis[i]._stAXIS_REF.NcToPlc.ActVelo;
+stAxis[i].bReady := fbAxis[i].P_bReady;
+stAxis[i].nErrId := fbAxis[i].P_nErrorID;
+
+stAxis[i].bE_Stop := TRUE;
+stAxis[i].bE_StopDelay := TRUE;
+stAxis[i].lrJogVelocity := 100;
+
+END_FOR
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="13" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="170" Count="32" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="123" Count="7" />
+      <LineId Id="122" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

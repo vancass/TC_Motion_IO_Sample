@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <DUT Name="ST_Axis" Id="{c71caa0a-cd3a-4585-bb68-fe35b20f9ced}">
+    <Declaration><![CDATA[TYPE ST_Axis :
+STRUCT
+	bEnable: BOOL;
+	bEnable_Negative: BOOL;
+	bEnable_Positive: BOOL;
+	lrOverride: LREAL;
+	bReset	: BOOL;
+	bE_Stop: BOOL;
+	bE_StopDelay: BOOL;
+	bHome: BOOL;
+	bCalibrationCam	: BOOL;
+	lrHomePosition	: LREAL;
+	bHalt	: BOOL;
+	bStop	: BOOL;
+	bAbsMove	: BOOL;
+	lrAbsPosition	: LREAL;
+	lrAbsVelocity	: LREAL;
+	bRelMove	: BOOL;
+	lrRelDistance	: LREAL;
+	lrRelVelocity	: LREAL;
+	bMoveVelo	: BOOL;
+	lrVeloVelocity	: LREAL;
+	bJogForward: BOOL;
+	bJogBackwards: BOOL;
+	lrJogVelocity	: LREAL;
+	bSetDynamic		: BOOL;
+	lrAcceleration	: LREAL;
+	lrDecelaration	: LREAL;
+	lrJerk			: LREAL;
+	arr_nStatus	: ARRAY[1..10] OF UDINT;	
+
+	//Vanessa added
+	lrActPos : LREAL;
+	lrActVelo : LREAL;
+	bReady : BOOL;
+	nVeloDirection : INT;
+	nErrId : UDINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
